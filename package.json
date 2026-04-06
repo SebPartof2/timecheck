@@ -1,8 +1,5 @@
 {
   "name": "timecheck",
   "version": "1.0.0",
-  "description": "VATSIM ATC hours checker",
-  "scripts": {
-    "start": "node server.js"
-  }
+  "description": "VATSIM ATC hours checker"
 }
