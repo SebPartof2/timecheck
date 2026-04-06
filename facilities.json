@@ -1,33 +1,43 @@
 {
   "facilities": [
     {
-      "name": "Delivery",
-      "pattern": "_DEL$",
-      "requiredRating": null
+      "name": "Simple Ground (OGG, ITO, etc. AFTER Receiving S1)",
+      "pattern": "^(?!HNL_).*_GND$",
+      "requiredRating": 2
     },
     {
-      "name": "Ground",
-      "pattern": "_GND$",
-      "requiredRating": null
+      "name": "Advanced Ground (HNL GND)",
+      "pattern": "^HNL_.*GND$",
+      "requiredRating": 2
     },
     {
-      "name": "Tower",
-      "pattern": "_TWR$",
-      "requiredRating": null
+      "name": "Simple Tower (OGG, ITO, etc. AFTER Receiving S2)",
+      "pattern": "^(?!HNL_).*_TWR$",
+      "requiredRating": 3
     },
     {
-      "name": "Approach/Departure",
-      "pattern": "_APP$|_DEP$",
-      "requiredRating": null
+      "name": "Advanced Tower (HNL TWR)",
+      "pattern": "^HNL_.*TWR$",
+      "requiredRating": 3
+    },
+    {
+      "name": "Simple Approach (OGG, ITO, etc. AFTER Receiving S3)",
+      "pattern": "^(?!HNL_).*_APP$",
+      "requiredRating": 4
+    },
+    {
+      "name": "Advanced Approach (HCF APP)",
+      "pattern": "^HNL_.*APP$",
+      "requiredRating": 4
     },
     {
       "name": "Center/Enroute",
       "pattern": "_CTR$",
-      "requiredRating": null
+      "requiredRating": 4
     },
     {
-      "name": "ATIS",
-      "pattern": "_ATIS$",
+      "name": "Observing",
+      "pattern": "_OBS$",
       "requiredRating": null
     }
   ]

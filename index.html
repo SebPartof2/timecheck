@@ -16,6 +16,17 @@
       <button id="check-btn">Check Hours</button>
     </div>
 
+    <div class="date-filters">
+      <div class="filter-group">
+        <label for="start-date">Start Date (optional):</label>
+        <input type="date" id="start-date">
+      </div>
+      <div class="filter-group">
+        <label for="end-date">End Date (optional):</label>
+        <input type="date" id="end-date">
+      </div>
+    </div>
+
     <div id="loading" class="hidden">
       <div class="spinner"></div>
       <p>Fetching ATC sessions...</p>
@@ -31,10 +42,34 @@
             <th>Facility</th>
             <th>Sessions</th>
             <th>Hours</th>
+            <th>Tracked</th>
           </tr>
         </thead>
         <tbody id="results-body"></tbody>
       </table>
+    </div>
+
+    <div id="sessions" class="hidden">
+      <div class="sessions-actions">
+        <button id="toggle-sessions">Hide sessions</button>
+        <p class="sessions-note">Most recent sessions first.</p>
+      </div>
+      <div id="sessions-table-wrapper" class="hidden">
+        <table id="sessions-table">
+          <thead>
+            <tr>
+              <th>Facility</th>
+              <th>Callsign</th>
+              <th>Rating</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Hours</th>
+              <th>Tracked</th>
+            </tr>
+          </thead>
+          <tbody id="sessions-body"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 

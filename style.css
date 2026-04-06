@@ -71,6 +71,38 @@ h1 {
   cursor: not-allowed;
 }
 
+.date-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.filter-group input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #16213e;
+  color: #e0e0e0;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.filter-group input[type="date"]:focus {
+  border-color: #0f3460;
+}
+
 .hidden {
   display: none !important;
 }
@@ -143,6 +175,47 @@ tbody td {
 
 tbody td:nth-child(2),
 tbody td:nth-child(3) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sessions-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+
+.sessions-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #0f3460;
+  color: #fff;
+  cursor: pointer;
+}
+
+.sessions-actions button:hover {
+  background: #1a4a7a;
+}
+
+.sessions-note {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+#sessions-table thead th:nth-child(4),
+#sessions-table thead th:nth-child(5),
+#sessions-table thead th:nth-child(6),
+#sessions-table thead th:nth-child(7) {
+  text-align: right;
+}
+
+#sessions-table tbody td:nth-child(4),
+#sessions-table tbody td:nth-child(5),
+#sessions-table tbody td:nth-child(6),
+#sessions-table tbody td:nth-child(7) {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }

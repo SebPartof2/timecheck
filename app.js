@@ -1,4 +1,4 @@
-const API_BASE = 'https://api.vatsim.net/v2/members';
+const API_BASE = '/api/members';
 
 let facilitiesCache = null;
 
@@ -37,24 +37,45 @@ async function fetchATCSessions(cid) {
   return { count: total, sessions: allData.items || allData.results || [] };
 }
 
-function calculateHours(sessions, facilities) {
-  const results = facilities.map(f => ({ name: f.name, sessions: 0, hours: 0 }));
-  const unmatched = { name: 'Unmatched', sessions: 0, hours: 0 };
+function calculateHours(sessions, facilities, startDate = null, endDate = null) {
+  const results = facilities.map(f => ({ name: f.name, sessions: 0, hours: 0, tracked: 0 }));
+  const unmatched = { name: 'Unmatched', sessions: 0, hours: 0, tracked: 0 };
+  const sessionDetails = [];
+
+  const startTime = startDate ? new Date(startDate).getTime() : null;
+  const endTime = endDate ? new Date(endDate).getTime() : null;
 
   for (const session of sessions) {
+    const data = session.connection_id || session;
+    const callsign = data.callsign || session.callsign || '';
+    const rating = data.rating ?? session.rating;
+    const tracked = session.aircrafttracked != null ? session.aircrafttracked : 0;
+
+    const sessionStart = data.start ? new Date(data.start).getTime() : null;
+    const sessionEnd = data.end ? new Date(data.end).getTime() : null;
+
+    // Filter by date range
+    if (startTime && sessionEnd && sessionEnd < startTime) continue;
+    if (endTime && sessionStart && sessionStart > endTime) continue;
+
     const hours = session.minutes_on_callsign != null
       ? session.minutes_on_callsign / 60
-      : (session.end && session.start)
-        ? (new Date(session.end) - new Date(session.start)) / 3600000
+      : (data.end && data.start)
+        ? (new Date(data.end) - new Date(data.start)) / 3600000
         : 0;
 
+    let facilityName = 'Unmatched';
     let matched = false;
     for (let i = 0; i < facilities.length; i++) {
       const f = facilities[i];
-      if (f.regex.test(session.callsign)) {
-        if (f.requiredRating == null || session.rating === f.requiredRating) {
+      if (f.regex.test(callsign)) {
+        const ratingValue = rating != null ? Number(rating) : null;
+        const requiredRatingValue = f.requiredRating != null ? Number(f.requiredRating) : null;
+        if (requiredRatingValue == null || (ratingValue != null && ratingValue >= requiredRatingValue)) {
           results[i].sessions++;
           results[i].hours += hours;
+          results[i].tracked += tracked;
+          facilityName = f.name;
           matched = true;
           break;
         }
@@ -64,13 +85,30 @@ function calculateHours(sessions, facilities) {
     if (!matched) {
       unmatched.sessions++;
       unmatched.hours += hours;
+      unmatched.tracked += tracked;
     }
+
+    sessionDetails.push({
+      facility: facilityName,
+      callsign,
+      rating,
+      start: data.start || '',
+      end: data.end || '',
+      hours,
+      tracked
+    });
   }
 
-  return { facilityResults: results, unmatched };
+  sessionDetails.sort((a, b) => {
+    const aDate = new Date(a.end || a.start || 0).getTime();
+    const bDate = new Date(b.end || b.start || 0).getTime();
+    return bDate - aDate;
+  });
+
+  return { facilityResults: results, unmatched, sessionDetails };
 }
 
-function renderResults(cid, totalCount, { facilityResults, unmatched }) {
+function renderResults(cid, totalCount, { facilityResults, unmatched, sessionDetails }) {
   document.getElementById('summary').textContent =
     `Results for CID ${cid} — ${totalCount} total session${totalCount !== 1 ? 's' : ''}`;
 
@@ -79,32 +117,60 @@ function renderResults(cid, totalCount, { facilityResults, unmatched }) {
 
   let totalSessions = 0;
   let totalHours = 0;
+  let totalTracked = 0;
 
   for (const r of facilityResults) {
     if (r.sessions === 0) continue;
     totalSessions += r.sessions;
     totalHours += r.hours;
+    totalTracked += r.tracked;
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${r.name}</td><td>${r.sessions}</td><td>${r.hours.toFixed(1)}</td>`;
+    tr.innerHTML = `<td>${r.name}</td><td>${r.sessions}</td><td>${r.hours.toFixed(1)}</td><td>${r.tracked}</td>`;
     tbody.appendChild(tr);
   }
 
   if (unmatched.sessions > 0) {
     totalSessions += unmatched.sessions;
     totalHours += unmatched.hours;
+    totalTracked += unmatched.tracked;
     const tr = document.createElement('tr');
     tr.className = 'row-unmatched';
-    tr.innerHTML = `<td>${unmatched.name}</td><td>${unmatched.sessions}</td><td>${unmatched.hours.toFixed(1)}</td>`;
+    tr.innerHTML = `<td>${unmatched.name}</td><td>${unmatched.sessions}</td><td>${unmatched.hours.toFixed(1)}</td><td>${unmatched.tracked}</td>`;
     tbody.appendChild(tr);
   }
 
-  // Total row
   const totalRow = document.createElement('tr');
   totalRow.className = 'row-total';
-  totalRow.innerHTML = `<td>Total</td><td>${totalSessions}</td><td>${totalHours.toFixed(1)}</td>`;
+  totalRow.innerHTML = `<td>Total</td><td>${totalSessions}</td><td>${totalHours.toFixed(1)}</td><td>${totalTracked}</td>`;
   tbody.appendChild(totalRow);
 
+  renderSessionDetails(sessionDetails);
   show('results');
+}
+
+function renderSessionDetails(details) {
+  const section = document.getElementById('sessions');
+  const wrapper = document.getElementById('sessions-table-wrapper');
+  const body = document.getElementById('sessions-body');
+  body.innerHTML = '';
+
+  for (const session of details) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${session.facility}</td>
+      <td>${session.callsign}</td>
+      <td>${session.rating ?? ''}</td>
+      <td>${session.start ? new Date(session.start).toLocaleString() : ''}</td>
+      <td>${session.end ? new Date(session.end).toLocaleString() : ''}</td>
+      <td>${session.hours.toFixed(1)}</td>
+      <td>${session.tracked}</td>
+    `;
+    body.appendChild(tr);
+  }
+
+  section.classList.remove('hidden');
+  wrapper.classList.remove('hidden');
+  document.getElementById('toggle-sessions').textContent = 'Hide sessions';
 }
 
 function show(id) {
@@ -142,7 +208,9 @@ async function handleCheck() {
       return;
     }
 
-    const hours = calculateHours(sessions, facilities);
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    const hours = calculateHours(sessions, facilities, startDate, endDate);
     renderResults(cid, count, hours);
   } catch (err) {
     showError(err.message);
@@ -155,5 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('check-btn').addEventListener('click', handleCheck);
   document.getElementById('cid-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') handleCheck();
+  });
+
+  const toggle = document.getElementById('toggle-sessions');
+  const wrapper = document.getElementById('sessions-table-wrapper');
+
+  toggle.addEventListener('click', () => {
+    const visible = !wrapper.classList.contains('hidden');
+    wrapper.classList.toggle('hidden', visible);
+    toggle.textContent = visible ? 'Show sessions' : 'Hide sessions';
   });
 });

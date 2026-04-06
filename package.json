@@ -1,0 +1,13 @@
+{
+  "name": "timecheck",
+  "version": "1.0.0",
+  "description": "Local proxy server for VATSIM ATC hours checker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.4",
+    "node-fetch": "^3.3.2"
+  }
+}
