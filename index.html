@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VATSIM ATC Hours Checker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>VATSIM ATC Hours Checker</h1>
+    <p class="subtitle">Check ATC hours for rating training eligibility</p>
+
+    <div class="input-group">
+      <input type="text" id="cid-input" placeholder="Enter VATSIM CID" inputmode="numeric" autocomplete="off">
+      <button id="check-btn">Check Hours</button>
+    </div>
+
+    <div id="loading" class="hidden">
+      <div class="spinner"></div>
+      <p>Fetching ATC sessions...</p>
+    </div>
+
+    <div id="error" class="hidden"></div>
+
+    <div id="results" class="hidden">
+      <p id="summary" class="summary"></p>
+      <table id="results-table">
+        <thead>
+          <tr>
+            <th>Facility</th>
+            <th>Sessions</th>
+            <th>Hours</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

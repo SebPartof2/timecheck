@@ -1,0 +1,34 @@
+{
+  "facilities": [
+    {
+      "name": "Delivery",
+      "pattern": "_DEL$",
+      "requiredRating": null
+    },
+    {
+      "name": "Ground",
+      "pattern": "_GND$",
+      "requiredRating": null
+    },
+    {
+      "name": "Tower",
+      "pattern": "_TWR$",
+      "requiredRating": null
+    },
+    {
+      "name": "Approach/Departure",
+      "pattern": "_APP$|_DEP$",
+      "requiredRating": null
+    },
+    {
+      "name": "Center/Enroute",
+      "pattern": "_CTR$",
+      "requiredRating": null
+    },
+    {
+      "name": "ATIS",
+      "pattern": "_ATIS$",
+      "requiredRating": null
+    }
+  ]
+}
