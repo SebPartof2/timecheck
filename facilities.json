@@ -1,44 +1,53 @@
 {
+  "artccPrefixes": ["HNL", "OGG", "ITO", "KOA", "LIH", "NGF", "BKH", "BSF", "HHI", "JRF", "MKK", "GUM", "GSN", "UAM", "ZUA"],
   "facilities": [
     {
       "name": "Simple Ground (OGG, ITO, etc. AFTER Receiving S1)",
+      "short": "GND",
       "pattern": "^(?!HNL_).*_GND$",
       "requiredRating": 2
     },
     {
       "name": "Advanced Ground (HNL GND)",
+      "short": "GND+",
       "pattern": "^HNL_.*GND$",
       "requiredRating": 2
     },
     {
       "name": "Simple Tower (OGG, ITO, etc. AFTER Receiving S2)",
+      "short": "TWR",
       "pattern": "^(?!HNL_).*_TWR$",
       "requiredRating": 3
     },
     {
       "name": "Advanced Tower (HNL TWR)",
+      "short": "TWR+",
       "pattern": "^HNL_.*TWR$",
       "requiredRating": 3
     },
     {
       "name": "Simple Approach (OGG, ITO, etc. AFTER Receiving S3)",
+      "short": "APP",
       "pattern": "^(?!HNL_).*_APP$",
       "requiredRating": 4
     },
     {
       "name": "Advanced Approach (HCF APP)",
+      "short": "APP+",
       "pattern": "^HNL_.*APP$",
       "requiredRating": 4
     },
     {
       "name": "Center/Enroute",
-      "pattern": "_CTR$",
-      "requiredRating": 4
+      "short": "CTR",
+      "pattern": ".*CTR$",
+      "requiredRating": 5
     },
     {
-      "name": "Observing",
-      "pattern": "_OBS$",
-      "requiredRating": null
+      "name": "Ramp",
+      "short": "RMP",
+      "pattern": ".*RMP$",
+      "requiredRating": 0
     }
   ]
 }

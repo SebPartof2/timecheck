@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 217 91% 95%;
+    --accent-foreground: 221 83% 30%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221 83% 53%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 47% 6%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 40% 9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 92% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 70%;
+    --accent: 217 92% 22%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 22%;
+    --input: 217 33% 22%;
+    --ring: 217 92% 60%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    background-image: radial-gradient(
+      ellipse 90% 60% at 50% 0%,
+      hsl(217 92% 60% / 0.12),
+      transparent 60%
+    );
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .ticket-notes p { margin: 0 0 0.5rem; }
+  .ticket-notes p:last-child { margin-bottom: 0; }
+  .ticket-notes ul { list-style: disc; margin: 0 0 0.5rem 1.25rem; padding: 0; }
+  .ticket-notes ol { list-style: decimal; margin: 0 0 0.5rem 1.25rem; padding: 0; }
+  .ticket-notes li { margin-bottom: 0.125rem; }
+  .ticket-notes a { @apply text-blue-500 underline underline-offset-2; }
+  .ticket-notes a:hover { @apply text-blue-400; }
+  .ticket-notes strong, .ticket-notes b { font-weight: 600; }
+  .ticket-notes em, .ticket-notes i { font-style: italic; }
+  .ticket-notes h1, .ticket-notes h2, .ticket-notes h3, .ticket-notes h4 {
+    font-weight: 600;
+    margin: 0.5rem 0 0.25rem;
+  }
+  .ticket-notes h1 { font-size: 1.05rem; }
+  .ticket-notes h2 { font-size: 1rem; }
+  .ticket-notes h3 { font-size: 0.95rem; }
+  .ticket-notes blockquote {
+    border-left: 3px solid hsl(var(--border));
+    padding-left: 0.75rem;
+    margin: 0.25rem 0;
+    color: hsl(var(--muted-foreground));
+  }
+  .ticket-notes code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: hsl(var(--muted));
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+  }
+  .ticket-notes pre {
+    background: hsl(var(--muted));
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    overflow-x: auto;
+    margin: 0 0 0.5rem;
+  }
+  .ticket-notes pre code { background: transparent; padding: 0; }
+}

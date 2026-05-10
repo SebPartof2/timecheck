@@ -1,0 +1,24 @@
+{
+  "name": "timecheck",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Timecheck — VATSIM ATC hours checker (HCF staff)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node server.js",
+    "dev:server": "node server.js",
+    "dev:web": "npm --prefix web run dev",
+    "build": "npm --prefix web install && npm --prefix web run build",
+    "postinstall": "npm --prefix web install"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0",
+    "node-fetch": "^3.3.2"
+  }
+}
